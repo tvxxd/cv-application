@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { button } from "telegraf/markup";
 
 function App() {
   return (
@@ -12,20 +13,34 @@ function App() {
   );
 }
 
+function InputField({ labelText, placeholder }) {
+  return (
+    <div className="input-field">
+      <label>{labelText}</label>
+      <input placeholder={placeholder} type="text" />
+    </div>
+  );
+}
+
+function DisplayMore({ children }) {
+  return (
+    <div className="display-more">
+      <h3>{children}</h3>
+      <button>+</button>
+    </div>
+  );
+}
+
 function PersonalDetails() {
   return (
     <div className="personal-details">
-      <h3>Personal Details</h3>
-      <label htmlFor="">Full name</label>
-      <input placeholder="First and last name" type="text" name="" id="" />
-      <label htmlFor="">Email</label>
-      <input placeholder="Email" type="text" name="" id="" />
-      <label htmlFor="">Phone number</label>
-      <input placeholder="Phone number" type="text" name="" id="" />
-      <label htmlFor="">Address</label>
-      <input placeholder="Address" type="text" name="" id="" />
-      <label htmlFor="">Job title</label>
-      <input placeholder="Job title" type="text" name="" id="" />
+      <DisplayMore>Personal details</DisplayMore>
+      <InputField placeholder="Full name" labelText="Full name" />
+      <InputField placeholder="Email" labelText="Email" />
+      <InputField placeholder="Phone number" labelText="Phone number" />
+      <InputField placeholder="Address" labelText="Address" />
+      <InputField placeholder="Job title" labelText="Job title" />
+      <InputField placeholder="Email" labelText="Email" />
     </div>
   );
 }
@@ -33,15 +48,11 @@ function PersonalDetails() {
 function Education() {
   return (
     <div className="education">
-      <h3>Education</h3>
-      <label htmlFor="">University</label>
-      <input placeholder="University" type="text" name="" id="" />
-
-      <label htmlFor="">Location</label>
-      <input placeholder="Location" type="text" name="" id="" />
-
-      <label htmlFor="">Field of Study</label>
-      <input placeholder="Field of Study" type="text" name="" id="" />
+      <DisplayMore>Education</DisplayMore>
+      <InputField placeholder="University" labelText="University" />
+      <InputField placeholder="Location" labelText="Location" />
+      <InputField placeholder="Field of Study" labelText="Field of Study" />
+      <InputField placeholder="Email" labelText="Email" />
     </div>
   );
 }
