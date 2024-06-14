@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 3em auto;
+  width: 90%;
+  font-family: "Satoshi", "Open Sans", "OpenSans", arial, helvetica, sans-serif;
+}
+
+.app {
+  border: 1px solid green;
+  display: flex;
+}
+
+.left-side {
+  flex-shrink: 0;
+
+  height: 500px;
+  overflow: hidden;
+  padding: 1rem 1rem 1rem 0;
+  margin: 1rem;
+  width: 250px;
+
+  max-height: 100%;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #bcf7f766 #fff;
+}
+
+.left-side::-webkit-scrollbar-thumb {
+  border-radius: 0.3rem;
+}
+
+label {
+  display: block;
+  margin-block: 0.5rem;
+}
+
+input {
+  border-radius: 0.3rem;
+  background-color: #bcf7f766;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  padding: 0.4rem;
+  width: 100%;
+}
+
+.education {
+  margin-top: 1rem;
+}
+
+.preview {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
