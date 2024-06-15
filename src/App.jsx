@@ -1,27 +1,48 @@
 import { useState } from "react";
 
 function App() {
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [jobtitle, setJobTitle] = useState("");
+  const [fullname, setFullname] = useState("John Doe");
+  const [email, setEmail] = useState("john.doe@example.com");
+  const [phoneNumber, setPhoneNumber] = useState("(555) 123-4567");
+  const [address, setAddress] = useState(
+    "1234 Elm Street, Springfield, IL 62704"
+  );
+  const [jobtitle, setJobTitle] = useState("Software Engineer");
 
-  const [university, setUniversity] = useState("");
-  const [fieldofstudy, setFieldOfStudy] = useState("");
-  const [location, setLocation] = useState("");
+  const [university, setUniversity] = useState("Springfield University");
+  const [fieldofstudy, setFieldOfStudy] = useState("Computer Science");
+  const [location, setLocation] = useState("Springfield, IL");
 
-  const [companyname, setCompanyName] = useState("");
-  const [positiontitle, setPositionTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [companyname, setCompanyName] = useState("TechCorp Inc.");
+  const [positiontitle, setPositionTitle] = useState("Senior Developer");
+  const [description, setDescription] = useState(
+    "Led a team of developers to create scalable web applications, improved performance by 30%, and mentored junior developers."
+  );
 
-  const [language, setLanguage] = useState("");
-  const [tools, setTools] = useState("");
-  const [frameworks, setFrameworks] = useState("");
+  const [language, setLanguage] = useState("JavaScript, Python, Java");
+  const [tools, setTools] = useState("Git, Docker, Jenkins");
+  const [frameworks, setFrameworks] = useState("React, Node.js, Django");
 
+  function handleClear() {
+    setFullname("");
+    setEmail("");
+    setPhoneNumber("");
+    setAddress("");
+    setJobTitle("");
+    setUniversity("");
+    setFieldOfStudy("");
+    setLocation("");
+    setCompanyName("");
+    setPositionTitle("");
+    setDescription("");
+    setLanguage("");
+    setTools("");
+    setFrameworks("");
+  }
   return (
     <div className="app">
       <LeftSide
+        onClear={handleClear}
         setFullname={setFullname}
         setEmail={setEmail}
         setPhoneNumber={setPhoneNumber}
@@ -54,6 +75,14 @@ function App() {
         frameworks={frameworks}
       />
     </div>
+  );
+}
+
+function ClearExample({ handleClear }) {
+  return (
+    <button onClick={handleClear} className="clear-example">
+      Clear Example
+    </button>
   );
 }
 
@@ -246,9 +275,11 @@ function LeftSide({
   setLanguage,
   setTools,
   setFrameworks,
+  onClear,
 }) {
   return (
     <div className="left-side">
+      <ClearExample handleClear={onClear} />
       <PersonalDetails
         setAddress={setAddress}
         setPhoneNumber={setPhoneNumber}
