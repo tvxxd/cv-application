@@ -1,83 +1,84 @@
 import { useState } from "react";
 
 function App() {
-  const [fullname, setFullname] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
-  const [phoneNumber, setPhoneNumber] = useState("(555) 123-4567");
-  const [address, setAddress] = useState(
-    "1234 Elm Street, Springfield, IL 62704"
-  );
-  const [jobtitle, setJobTitle] = useState("Software Engineer");
+  const [personalDetails, handlePersonalChange] = useInputChange({
+    fullname: "John Doe",
+    email: "john.doe@example.com",
+    phoneNumber: "(555) 123-4567",
+    address: "1234 Elm Street, Springfield, IL 62704",
+    jobtitle: "Software Engineer",
+  });
 
-  const [university, setUniversity] = useState("Springfield University");
-  const [fieldofstudy, setFieldOfStudy] = useState("Computer Science");
-  const [location, setLocation] = useState("Springfield, IL");
+  const [educationDetails, handleEducationChange] = useInputChange({
+    university: "Springfield University",
+    fieldofstudy: "Computer Science",
+    location: "Springfield, IL",
+  });
 
-  const [companyname, setCompanyName] = useState("TechCorp Inc.");
-  const [positiontitle, setPositionTitle] = useState("Senior Developer");
-  const [description, setDescription] = useState(
-    "Led a team of developers to create scalable web applications, improved performance by 30%, and mentored junior developers."
-  );
+  const [experienceDetails, handleExperienceChange] = useInputChange({
+    companyname: "TechCorp Inc.",
+    positiontitle: "Senior Developer",
+    description:
+      "Led a team of developers to create scalable web applications, improved performance by 30%, and mentored junior developers.",
+  });
 
-  const [language, setLanguage] = useState("JavaScript, Python, Java");
-  const [tools, setTools] = useState("Git, Docker, Jenkins");
-  const [frameworks, setFrameworks] = useState("React, Node.js, Django");
+  const [skills, handleSkillsChange] = useInputChange({
+    language: "JavaScript, Python, Java",
+    tools: "Git, Docker, Jenkins",
+    frameworks: "React, Node.js, Django",
+  });
 
   function handleClear() {
-    setFullname("");
-    setEmail("");
-    setPhoneNumber("");
-    setAddress("");
-    setJobTitle("");
-    setUniversity("");
-    setFieldOfStudy("");
-    setLocation("");
-    setCompanyName("");
-    setPositionTitle("");
-    setDescription("");
-    setLanguage("");
-    setTools("");
-    setFrameworks("");
+    console.log("click")
+    handlePersonalChange({
+      fullname: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+      jobtitle: "",
+    });
+
+    handleEducationChange({
+      university: "",
+      fieldofstudy: "",
+      location: "",
+    });
+
+    handleExperienceChange({
+      companyname: "",
+      positiontitle: "",
+      description: "",
+    });
+
+    handleSkillsChange({
+      language: "",
+      tools: "",
+      frameworks: "",
+    });
   }
+
   return (
     <div className="app">
       <LeftSide
+        personalDetails={personalDetails}
+        handlePersonalChange={handlePersonalChange}
+        educationDetails={educationDetails}
+        handleEducationChange={handleEducationChange}
+        experienceDetails={experienceDetails}
+        handleExperienceChange={handleExperienceChange}
+        skills={skills}
+        handleSkillsChange={handleSkillsChange}
         onClear={handleClear}
-        setFullname={setFullname}
-        setEmail={setEmail}
-        setPhoneNumber={setPhoneNumber}
-        setAddress={setAddress}
-        setJobTitle={setJobTitle}
-        setUniversity={setUniversity}
-        setFieldOfStudy={setFieldOfStudy}
-        setLocation={setLocation}
-        setCompanyName={setCompanyName}
-        setPositionTitle={setPositionTitle}
-        setDescription={setDescription}
-        setLanguage={setLanguage}
-        setTools={setTools}
-        setFrameworks={setFrameworks}
       />
       <Preview
-        fullname={fullname}
-        email={email}
-        phoneNumber={phoneNumber}
-        address={address}
-        jobtitle={jobtitle}
-        university={university}
-        location={location}
-        fieldofstudy={fieldofstudy}
-        companyname={companyname}
-        positiontitle={positiontitle}
-        description={description}
-        language={language}
-        tools={tools}
-        frameworks={frameworks}
+        personalDetails={personalDetails}
+        educationDetails={educationDetails}
+        experienceDetails={experienceDetails}
+        skills={skills}
       />
     </div>
   );
 }
-
 function ClearExample({ handleClear }) {
   return (
     <button onClick={handleClear} className="clear-example">
@@ -86,13 +87,33 @@ function ClearExample({ handleClear }) {
   );
 }
 
-function InputField({ labelText, placeholder, setState }) {
+function useInputChange(initialState) {
+  const [state, setState] = useState(initialState);
+
+  function handleChange(e) {
+    console.log(e);
+    console.log(e.target);
+    const { name, value } = e.target;
+    console.log(name);
+    console.log(value);
+    setState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  return [state, handleChange];
+}
+
+function InputField({ label, name, value, onChange }) {
   return (
     <div className="input-field">
-      <label>{labelText}</label>
+      <label>{label}</label>
       <input
-        onChange={(e) => setState(e.target.value)}
-        placeholder={placeholder}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={label}
         type="text"
       />
     </div>
@@ -108,18 +129,13 @@ function DisplayMore({ children, onToggle, showMore }) {
   );
 }
 
-function PersonalDetails({
-  setFullname,
-  setEmail,
-  setPhoneNumber,
-  setAddress,
-  setJobTitle,
-}) {
+function PersonalDetails({ details, handleChange }) {
   const [showMore, setShowMore] = useState(true);
 
   function handleToggle() {
     setShowMore((prev) => !prev);
   }
+
   return (
     <div className="personal-details">
       <DisplayMore showMore={showMore} onToggle={handleToggle}>
@@ -127,39 +143,24 @@ function PersonalDetails({
       </DisplayMore>
       {showMore && (
         <>
-          <InputField
-            setState={setFullname}
-            placeholder="Full name"
-            labelText="Full name"
-          />
-          <InputField
-            setState={setEmail}
-            placeholder="Email"
-            labelText="Email"
-          />
-          <InputField
-            setState={setPhoneNumber}
-            placeholder="Phone number"
-            labelText="Phone number"
-          />
-          <InputField
-            setState={setAddress}
-            placeholder="Address"
-            labelText="Address"
-          />
-          <InputField
-            setState={setJobTitle}
-            placeholder="Job title"
-            labelText="Job title"
-          />
+          {Object.keys(details).map((key) => (
+            <InputField
+              key={key}
+              name={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              value={details[key]}
+              onChange={handleChange}
+            />
+          ))}
         </>
       )}
     </div>
   );
 }
 
-function Education({ setUniversity, setFieldOfStudy, setLocation }) {
+function Education({ details, handleChange }) {
   const [showMore, setShowMore] = useState(false);
+
   function handleToggle() {
     setShowMore((prev) => !prev);
   }
@@ -171,33 +172,28 @@ function Education({ setUniversity, setFieldOfStudy, setLocation }) {
       </DisplayMore>
       {showMore && (
         <>
-          <InputField
-            setState={setUniversity}
-            placeholder="University"
-            labelText="University"
-          />
-          <InputField
-            setState={setFieldOfStudy}
-            placeholder="Location"
-            labelText="Location"
-          />
-          <InputField
-            setState={setLocation}
-            placeholder="Field of Study"
-            labelText="Field of Study"
-          />
+          {Object.keys(details).map((key) => (
+            <InputField
+              key={key}
+              name={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              value={details[key]}
+              onChange={handleChange}
+            />
+          ))}
         </>
       )}
     </div>
   );
 }
 
-function Experience({ setCompanyName, setPositionTitle, setDescription }) {
+function Experience({ details, handleChange }) {
   const [showMore, setShowMore] = useState(false);
 
   function handleToggle() {
     setShowMore((prev) => !prev);
   }
+
   return (
     <div className="experience">
       <DisplayMore showMore={showMore} onToggle={handleToggle}>
@@ -205,55 +201,44 @@ function Experience({ setCompanyName, setPositionTitle, setDescription }) {
       </DisplayMore>
       {showMore && (
         <>
-          <InputField
-            setState={setCompanyName}
-            placeholder="Company name"
-            labelText="Company name"
-          />
-          <InputField
-            setState={setPositionTitle}
-            placeholder="Position title"
-            labelText="Position title"
-          />
-          <InputField
-            setState={setDescription}
-            placeholder="Description"
-            labelText="Description"
-          />
+          {Object.keys(details).map((key) => (
+            <InputField
+              key={key}
+              name={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              value={details[key]}
+              onChange={handleChange}
+            />
+          ))}
         </>
       )}
     </div>
   );
 }
 
-function Skills({ setLanguage, setTools, setFrameworks }) {
+function Skills({ details, handleChange }) {
   const [showMore, setShowMore] = useState(false);
 
   function handleToggle() {
     setShowMore((prev) => !prev);
   }
+
   return (
-    <div className="experience">
+    <div className="skills">
       <DisplayMore showMore={showMore} onToggle={handleToggle}>
         Skills
       </DisplayMore>
       {showMore && (
         <>
-          <InputField
-            setState={setLanguage}
-            placeholder="Languages"
-            labelText="Languages"
-          />
-          <InputField
-            setState={setTools}
-            placeholder="Tools"
-            labelText="Tools"
-          />
-          <InputField
-            setState={setFrameworks}
-            placeholder="Frameworks"
-            labelText="Frameworks"
-          />
+          {Object.keys(details).map((key) => (
+            <InputField
+              key={key}
+              name={key}
+              label={key.charAt(0).toUpperCase() + key.slice(1)}
+              value={details[key]}
+              onChange={handleChange}
+            />
+          ))}
         </>
       )}
     </div>
@@ -261,115 +246,108 @@ function Skills({ setLanguage, setTools, setFrameworks }) {
 }
 
 function LeftSide({
-  setFullname,
-  setEmail,
-  setPhoneNumber,
-  setAddress,
-  setJobTitle,
-  setUniversity,
-  setFieldOfStudy,
-  setLocation,
-  setCompanyName,
-  setPositionTitle,
-  setDescription,
-  setLanguage,
-  setTools,
-  setFrameworks,
+  personalDetails,
+  handlePersonalChange,
+  educationDetails,
+  handleEducationChange,
+  experienceDetails,
+  handleExperienceChange,
+  skills,
+  handleSkillsChange,
   onClear,
 }) {
   return (
     <div className="left-side">
       <ClearExample handleClear={onClear} />
       <PersonalDetails
-        setAddress={setAddress}
-        setPhoneNumber={setPhoneNumber}
-        setEmail={setEmail}
-        setFullname={setFullname}
-        setJobTitle={setJobTitle}
+        details={personalDetails}
+        handleChange={handlePersonalChange}
       />
       <Education
-        setLocation={setLocation}
-        setFieldOfStudy={setFieldOfStudy}
-        setUniversity={setUniversity}
+        details={educationDetails}
+        handleChange={handleEducationChange}
       />
       <Experience
-        setDescription={setDescription}
-        setPositionTitle={setPositionTitle}
-        setCompanyName={setCompanyName}
+        details={experienceDetails}
+        handleChange={handleExperienceChange}
       />
-      <Skills
-        setFrameworks={setFrameworks}
-        setTools={setTools}
-        setLanguage={setLanguage}
-      />
+      <Skills details={skills} handleChange={handleSkillsChange} />
     </div>
   );
 }
 
 function Preview({
-  fullname,
-  email,
-  phoneNumber,
-  address,
-  jobtitle,
-  university,
-  location,
-  fieldofstudy,
-  companyname,
-  positiontitle,
-  description,
-  language,
-  tools,
-  frameworks,
+  personalDetails,
+  educationDetails,
+  experienceDetails,
+  skills,
 }) {
   return (
     <div className="preview">
-      {(fullname || email || phoneNumber || address || jobtitle) && (
+      {(personalDetails.fullname ||
+        personalDetails.email ||
+        personalDetails.phoneNumber ||
+        personalDetails.address ||
+        personalDetails.jobtitle) && (
         <div className="for-personal-details">
-          {fullname && <h3>{fullname}</h3>}
-          {jobtitle && <span>{jobtitle}</span>}
-          {email && <p>{email}</p>}
-          {phoneNumber && <p>{phoneNumber}</p>}
-          {address && <p>{address}</p>}
+          {personalDetails.fullname && <h3>{personalDetails.fullname}</h3>}
+          {personalDetails.jobtitle && <span>{personalDetails.jobtitle}</span>}
+          {personalDetails.email && <p>{personalDetails.email}</p>}
+          {personalDetails.phoneNumber && <p>{personalDetails.phoneNumber}</p>}
+          {personalDetails.address && <p>{personalDetails.address}</p>}
         </div>
       )}
-      {(university || location || fieldofstudy) && (
+      {(educationDetails.university ||
+        educationDetails.location ||
+        educationDetails.fieldofstudy) && (
         <div className="for-education">
           <h4>Education</h4>
           <div className="e-details">
-            {university && <p>{university}</p>}
-            {location && <p>{location}</p>}
+            {educationDetails.university && (
+              <p>{educationDetails.university}</p>
+            )}
+            {educationDetails.location && <p>{educationDetails.location}</p>}
           </div>
-          {fieldofstudy && <p>{fieldofstudy}</p>}
+          {educationDetails.fieldofstudy && (
+            <p>{educationDetails.fieldofstudy}</p>
+          )}
         </div>
       )}
-      {(companyname || positiontitle || description) && (
+      {(experienceDetails.companyname ||
+        experienceDetails.positiontitle ||
+        experienceDetails.description) && (
         <div className="for-experience">
           <h4>Experience</h4>
-          {companyname && <span>{companyname}</span>}
-          {positiontitle && <span> | {positiontitle}</span>}
-          {description && <p>{description}</p>}
+          {experienceDetails.companyname && (
+            <span>{experienceDetails.companyname}</span>
+          )}
+          {experienceDetails.positiontitle && (
+            <span> | {experienceDetails.positiontitle}</span>
+          )}
+          {experienceDetails.description && (
+            <p>{experienceDetails.description}</p>
+          )}
         </div>
       )}
-      {(language || frameworks || tools) && (
+      {(skills.language || skills.frameworks || skills.tools) && (
         <div className="for-skills">
           <h4>Skills</h4>
-          {language && (
+          {skills.language && (
             <div className="flex">
               <span>Programming Languages:</span>
-              <span>{language}</span>
+              <span>{skills.language}</span>
             </div>
           )}
-          {frameworks && (
+          {skills.frameworks && (
             <div className="flex">
               <span>Frameworks:</span>
-              <span>{frameworks}</span>
+              <span>{skills.frameworks}</span>
             </div>
           )}
-          {tools && (
+          {skills.tools && (
             <div className="flex">
               <span>Tools:</span>
-              <span>{tools}</span>
+              <span>{skills.tools}</span>
             </div>
           )}
         </div>

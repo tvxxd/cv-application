@@ -154,3 +154,7 @@ input:focus {
 .clear-example:active {
   transform: scale(0.9);
 }
+
+.skills {
+  margin-top: 1rem;
+}
