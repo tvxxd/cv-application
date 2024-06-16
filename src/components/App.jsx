@@ -3,36 +3,39 @@ import { useInputChange } from "./useInputChange";
 import { LeftSide } from "./LeftSide";
 
 function App() {
-  const [personalDetails, handlePersonalChange] = useInputChange({
-    fullname: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "(555) 123-4567",
-    address: "1234 Elm Street, Springfield, IL 62704",
-    jobtitle: "Software Engineer",
-  });
+  const [personalDetails, handlePersonalChange, resetPersonalDetails] =
+    useInputChange({
+      fullname: "John Doe",
+      email: "john.doe@example.com",
+      phoneNumber: "(555) 123-4567",
+      address: "1234 Elm Street, Springfield, IL 62704",
+      jobtitle: "Software Engineer",
+    });
 
-  const [educationDetails, handleEducationChange] = useInputChange({
-    university: "Springfield University",
-    fieldofstudy: "Computer Science",
-    location: "Springfield, IL",
-  });
+  const [educationDetails, handleEducationChange, resetEducationDetails] =
+    useInputChange({
+      university: "Springfield University",
+      fieldofstudy: "Computer Science",
+      location: "Springfield, IL",
+    });
 
-  const [experienceDetails, handleExperienceChange] = useInputChange({
-    companyname: "TechCorp Inc.",
-    positiontitle: "Senior Developer",
-    description:
-      "Led a team of developers to create scalable web applications, improved performance by 30%, and mentored junior developers.",
-  });
+  const [experienceDetails, handleExperienceChange, resetExperienceDetails] =
+    useInputChange({
+      companyname: "TechCorp Inc.",
+      positiontitle: "Senior Developer",
+      description:
+        "Led a team of developers to create scalable web applications, improved performance by 30%, and mentored junior developers.",
+    });
 
-  const [skills, handleSkillsChange] = useInputChange({
+  const [skills, handleSkillsChange, resetSkills] = useInputChange({
     language: "JavaScript, Python, Java",
     tools: "Git, Docker, Jenkins",
     frameworks: "React, Node.js, Django",
   });
 
   function handleClear() {
-    console.log("click")
-    handlePersonalChange({
+    console.log("click");
+    resetPersonalDetails({
       fullname: "",
       email: "",
       phoneNumber: "",
@@ -40,19 +43,19 @@ function App() {
       jobtitle: "",
     });
 
-    handleEducationChange({
+    resetEducationDetails({
       university: "",
       fieldofstudy: "",
       location: "",
     });
 
-    handleExperienceChange({
+    resetExperienceDetails({
       companyname: "",
       positiontitle: "",
       description: "",
     });
 
-    handleSkillsChange({
+    resetSkills({
       language: "",
       tools: "",
       frameworks: "",

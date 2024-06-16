@@ -15,5 +15,9 @@ export function useInputChange(initialState) {
     }));
   }
 
-  return [state, handleChange];
+  function reset(newState) {
+    setState(newState);
+  }
+
+  return [state, handleChange, reset];
 }
