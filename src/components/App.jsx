@@ -1,5 +1,5 @@
 import { Preview } from "./Preview";
-import { useInputChange } from "./useInputChange";
+import { useInputChange } from "../hooks/useInputChange";
 import { LeftSide } from "./LeftSide";
 
 function App() {
@@ -34,7 +34,6 @@ function App() {
   });
 
   function handleClear() {
-    console.log("click");
     resetPersonalDetails({
       fullname: "",
       email: "",
